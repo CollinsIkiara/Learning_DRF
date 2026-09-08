@@ -66,4 +66,4 @@ class OrderSerializer(serializers.ModelSerializer):
             'status',
             'items',
             'total_price'
-            )
+        )
