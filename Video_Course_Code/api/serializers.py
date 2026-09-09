@@ -38,18 +38,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
         )
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = (
-            'id',
-            'username',
-            'date_joined'
-        )
-
 # The OrderSerializer implements nested serialization for the Order model, including related User and OrderItem data. It also calculates the total price of the order using a custom method.
 class OrderSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True) # many=True because a user can have multiple orders, and read_only=True because we don't want to allow the user to be modified through the order serializer.
     items = OrderItemSerializer(many=True, read_only=True)
     total_price = serializers.SerializerMethodField(method_name='total') # SerializerMethodField is used to add a custom field to the serializer that is not directly tied to a model field.
     
@@ -67,3 +57,9 @@ class OrderSerializer(serializers.ModelSerializer):
             'items',
             'total_price'
         )
+        
+        
+class ProductInfoSerializer(serializers.Serializer):
+    products = ProductSerializer(many=True)
+    count = serializers.IntegerField()
+    max_price = serializers.FloatField()
